@@ -100,7 +100,7 @@ class ReportComparisonService:
 DATA:
 {formatted_changes}
 
-Provide a concise 2-3 sentence educational summary of what changed. Do not diagnose the patient."""
+CRITICAL RULE: Do NOT offer any medical diagnosis, prognosis, or medical advice. Provide ONLY a factual 2-3 sentence summary of numerical value changes between the two reports."""
 
         if self.api_key and self.api_key != "AQ.Ab8RN6LGkCVF0oLww_G4HplHvfnYewRaFIq55qdsos5deUkHmA":
             try:
