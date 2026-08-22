@@ -1,5 +1,6 @@
 import io
 import pytest
+from PIL import Image
 from fastapi.testclient import TestClient
 from api.main import app
 
@@ -168,3 +169,21 @@ def test_document_deletion_cascading():
     # Verify not found in document details
     get_res = client.get(f"/api/documents/{doc_id}?patient_id=patient_A")
     assert get_res.status_code == 404
+
+def test_document_upload_image_prescription():
+    # Generate a dummy 100x100 RGB image simulating a handwritten prescription file
+    img = Image.new('RGB', (100, 100), color=(255, 255, 255))
+    buf = io.BytesIO()
+    img.save(buf, format='JPEG')
+    buf.seek(0)
+
+    res = client.post(
+        "/api/documents/upload",
+        data={"patient_id": "patient_A"},
+        files={"file": ("rx_handwritten.jpg", buf, "image/jpeg")}
+    )
+    assert res.status_code == 201
+    data = res.json()
+    assert data["patient_id"] == "patient_A"
+    assert "document_id" in data
+
